@@ -1,0 +1,13 @@
+# jitpack.yml
+jdk:
+  - openjdk17
+
+before_install:
+  - ./gradlew clean
+
+install:
+  - ./gradlew publishToMavenLocal --no-daemon
+
+cache:
+  directories:
+    - .gradle
