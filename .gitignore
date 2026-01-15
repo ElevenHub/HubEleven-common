@@ -1,0 +1,36 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+
+
+# ----------------------------------------------------------------------
+# IntelliJ & IDE Files
+# ----------------------------------------------------------------------
+.idea/
+*.iml
+*.iws
+*.ipr
+
+
+### Gradle ###
+.gradle
+/build/
+!/build/libs/*.jar # 빌드된 JAR 파일 자체는 배포에 필요할 수 있지만, 일반적으로 최종 아티팩트는 Git에 커밋하지 않습니다.
+
+
+### Java ###
+*.class
+*.jar
+*.war
+*.log
+/target/ # Maven 사용 시
+
+### OS generated files ###
+.DS_Store
+Thumbs.db

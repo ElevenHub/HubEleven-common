@@ -1,6 +1,6 @@
 package com.commonLib.common.exception;
 
-import com.commonLib.common.code.StatusCode;
+import com.commonLib.common.code.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GlobalException extends RuntimeException {
 
-	private final StatusCode errorCode;
+	private final ErrorCode errorCode;
 }

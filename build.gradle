@@ -1,26 +1,32 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'org.springframework.boot' version '3.5.8'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.github.Doritosch.commonLib'
-version = '1.0.5'
-description = 'Common utility module'
+group = 'com.github.ElevenHub'
+version = '0.0.1'
+description = 'Common Module for MSA Services'
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+    archiveClassifier = '' // jar 파일 'plain' 꼬리표 제거
+}
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
-    withSourcesJar()
-    withJavadocJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
     }
 }
 
@@ -30,20 +36,40 @@ repositories {
 
 dependencies {
 
-    implementation 'org.springframework:spring-context:6.1.2'
-    implementation 'org.springframework:spring-web:6.1.2'
-    implementation 'org.springframework:spring-webmvc:6.2.12'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.19.2'
+    api 'org.springframework:spring-context'
+    api 'org.springframework:spring-web'
+    api 'org.springframework:spring-webmvc'
+    api 'com.fasterxml.jackson.core:jackson-annotations'
 
-    implementation 'org.springframework.data:spring-data-jpa:3.3.2'
-    implementation 'org.hibernate.orm:hibernate-core:6.6.33.Final'
-    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    api 'jakarta.servlet:jakarta.servlet-api'
+    api 'org.springframework.data:spring-data-jpa'
+    api 'jakarta.persistence:jakarta.persistence-api'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.7'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    compileOnly 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+publishing {
+    publications {
+        create('mavenJava', MavenPublication) {
+            from components.java
+
+            groupId = project.group
+            artifactId = 'hub-eleven-common'
+            version = project.version
+
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+            }
+        }
+    }
 }
 
 tasks.named('test') {

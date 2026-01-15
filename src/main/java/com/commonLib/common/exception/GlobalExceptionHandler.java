@@ -1,6 +1,6 @@
 package com.commonLib.common.exception;
 
-import com.commonLib.common.code.ErrorCode;
+import com.commonLib.common.code.CommonErrorCode;
 import com.commonLib.common.response.ApiResponse;
 import com.commonLib.common.response.ApiResponseEntity;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Object>> handleException(final Exception e) {
-		return ApiResponseEntity.onFailure(ErrorCode.SERVER_ERROR);
+		return ApiResponseEntity.onFailure(CommonErrorCode.SERVER_ERROR);
 	}
 }
