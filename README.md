@@ -5,8 +5,8 @@ MSA(Microservices Architecture) 환경에서 사용되는 공통 라이브러리
 ## 개요
 
 - **Group ID**: `com.github.ElevenHub`
-- **Artifact ID**: `hub-eleven-common`
-- **Version**: `0.0.1`
+- **Artifact ID**: `HubEleven-common`
+- **Version**: `v0.0.1`
 - **Java Version**: 17
 - **Spring Boot Version**: 3.5.8
 
@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.ElevenHub:hub-eleven-common:0.0.1'
+    implementation 'com.github.ElevenHub:HubEleven-common:v0.0.1'
 }
 ```
 
@@ -39,8 +39,8 @@ dependencies {
 
 <dependency>
     <groupId>com.github.ElevenHub</groupId>
-    <artifactId>hub-eleven-common</artifactId>
-    <version>0.0.1</version>
+    <artifactId>HubEleven-common</artifactId>
+    <version>v0.0.1</version>
 </dependency>
 ```
 
