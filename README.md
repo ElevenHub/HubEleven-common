@@ -405,45 +405,6 @@ CommonPageResponse<UserDTO> response = PagingUtils.convert(page, user -> new Use
 
 ---
 
-## 주요 의존성
-
-- Spring Context
-- Spring Web & WebMVC
-- Spring Data JPA
-- Jakarta Persistence API
-- Jakarta Servlet API
-- Jackson Annotations
-- Lombok
-
----
-
-## 사용 시 주의사항
-
-1. **JPA Auditing 사용자 ID**
-   - `createdBy`, `updatedBy`를 자동으로 설정하려면 Gateway나 각 서비스에서 HTTP 헤더 `X-User-Id`에 사용자 ID를 Long 타입으로 설정해야 합니다.
-   - 헤더가 없거나 잘못된 형식이면 Auditing이 생략됩니다.
-
-2. **페이징 자동 검증**
-   - `CommonPageRequest`를 컨트롤러 파라미터로 받으면 자동으로 쿼리 파라미터가 바인딩됩니다.
-   - record의 compact constructor가 자동으로 실행되어 검증 및 기본값 설정이 처리됩니다.
-   - `size`는 10, 30, 50만 허용되며, 다른 값은 자동으로 10으로 변경됩니다.
-   - `page`가 음수면 자동으로 0으로 변경됩니다.
-
-3. **ErrorCode 구현**
-   - 각 서비스에서 `ErrorCode` 인터페이스를 구현하여 도메인별 에러 코드를 정의해야 합니다.
-   - `getName()`, `getMessage()`, `getHttpStatus()` 메서드를 반드시 구현해야 합니다.
-
-4. **Soft Delete**
-   - `BaseEntity`를 상속받은 엔티티는 `delete()` 메서드를 사용하여 소프트 삭제를 수행해야 합니다.
-   - 실제 DB에서 삭제되지 않고 `deletedAt`, `deletedBy`만 설정됩니다.
-   - 삭제된 데이터를 조회에서 제외하려면 `isDeleted()` 메서드를 사용하여 필터링해야 합니다.
-
-5. **Component Scan**
-   - `@ComponentScan`과 `@EntityScan`에 `com.commonLib.common` 패키지를 반드시 포함해야 합니다.
-   - 그렇지 않으면 JpaAuditingConfig, GlobalExceptionHandler 등의 Bean이 등록되지 않습니다.
-
----
-
 ## 버전 관리 (Versioning)
 
 - **v0.0.1**: 초기 버전
@@ -453,9 +414,3 @@ CommonPageResponse<UserDTO> response = PagingUtils.convert(page, user -> new Use
   - CommonPageRequest, CommonPageResponse
   - PagingUtils
   - SuccessCode, CommonErrorCode
-
----
-
-## 라이선스
-
-이 프로젝트는 ElevenHub 팀의 내부 라이브러리입니다.

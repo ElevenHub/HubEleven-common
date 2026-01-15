@@ -43,6 +43,7 @@ dependencies {
 
     api 'jakarta.servlet:jakarta.servlet-api'
     api 'org.springframework.data:spring-data-jpa'
+    api 'org.springframework.boot:spring-boot-starter-web'
     api 'jakarta.persistence:jakarta.persistence-api'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
