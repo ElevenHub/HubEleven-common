@@ -103,28 +103,14 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable Long id) {
         UserResponse user = userService.getUser(id);
-        return ApiResponseEntity.success(user);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(user));
     }
 
     // 생성 응답 (201 Created)
     @PostMapping
     public ResponseEntity<ApiResponse<UserResponse>> createUser(@RequestBody UserRequest request) {
         UserResponse user = userService.createUser(request);
-        return ApiResponseEntity.create(SuccessCode.CREATED, "/api/users/" + user.getId(), user);
-    }
-
-    // 커스텀 응답
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
-        UserResponse user = userService.updateUser(id, request);
-        return ApiResponseEntity.from(SuccessCode.UPDATED, user);
-    }
-
-    // 단순 메시지 응답
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ApiResponseEntity.ok("사용자가 삭제되었습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(user));
     }
 }
 ```
@@ -230,11 +216,6 @@ public enum UserErrorCode implements ErrorCode {
 
     private final HttpStatus httpStatus;
     private final String message;
-
-    @Override
-    public String getName() {
-        return name();
-    }
 }
 ```
 
@@ -339,52 +320,20 @@ public class UserService {
 }
 ```
 
-#### 사용자 ID 추출 (AuditorAware)
-
-`createdBy`와 `updatedBy`는 HTTP 요청 헤더 `X-User-Id`에서 자동으로 추출됩니다.
-
-Gateway 또는 각 서비스의 인증 필터에서 다음과 같이 헤더를 설정해야 합니다:
-
-```java
-@Component
-public class AuthFilter extends OncePerRequestFilter {
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-        // JWT 토큰에서 사용자 ID 추출
-        Long userId = extractUserIdFromToken(request);
-
-        // X-User-Id 헤더에 설정 (내부 서비스 호출 시)
-        request.setAttribute("X-User-Id", userId.toString());
-
-        filterChain.doFilter(request, response);
-    }
-}
-```
-
 ---
 
 ### 5. 공통 코드
-
-#### SuccessCode
-
-기본 제공되는 성공 코드입니다.
-
-```java
-SuccessCode.SUCCESS    // 200 OK, "성공했습니다."
-SuccessCode.CREATED    // 201 Created, "생성되었습니다."
-SuccessCode.UPDATED    // 200 OK, "수정되었습니다."
-SuccessCode.DELETED    // 200 OK, "삭제되었습니다."
-```
 
 #### CommonErrorCode
 
 기본 제공되는 에러 코드입니다.
 
 ```java
-CommonErrorCode.SERVER_ERROR  // 500 Internal Server Error, "서버 에러가 발생하였습니다."
+    CommonErrorCode.STATE_CONFLICT(HttpStatus.CONFLICT, "해당 데이터가 이미 존재합니다."),
+    CommonErrorCode.FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
+    CommonErrorCode.INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "파라미터가 올바르지 않습니다."),
+    CommonErrorCode.RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "리소스를 찾을 수 없습니다."),
+    CommonErrorCode.INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"서버 내부 오류가 발생했습니다.")
 ```
 
 ---
